@@ -10,10 +10,10 @@ const listContacts = async () => {
   return list;
 }
 
-const getContactById = async (contactId) => {
+const getContactById = async (id) => {
   try {
     const data = await listContacts();
-    const contact = data.filter((contact) => contact.id === contactId);
+    const contact = data.find((contact) => contact.id === id);
     return contact;
     
   } catch(error) {
@@ -21,18 +21,16 @@ const getContactById = async (contactId) => {
   }
   
 }
+
 const addContact = async (name, email, phone) => {
-
-  const newContact = { id: Number(newId()), name, email, phone, };
-
+   
   try {
-    const data = await fs.readFile(contactsPath, "utf8");
-    const parsedContacts = JSON.parse(data);
-
-    const contacts = [...parsedContacts, newContact];
+   
+    const newContact = { id: Number(newId()), name, email, phone, };
+    const data = await listContacts();
+    const contacts = [...data, newContact];
 
     await fs.writeFile(contactsPath, JSON.stringify(contacts));
-
     return contacts; 
    
   } catch (error) {
@@ -42,16 +40,16 @@ const addContact = async (name, email, phone) => {
 };
 
 
-const removeContact = async (contactId) => {
+const removeContact = async (id) => {
   try {
-    const data = await fs.readFile(contactsPath, "utf8");
-    const contacts = JSON.parse(data);
-
-    const filteredContacts = contacts.filter((contact) => contact.id != contactId);
-    await fs.writeFile(contactsPath, JSON.stringify(filteredContacts, null, 2));
     
-    return filteredContacts;
+    const data = await listContacts();
     
+    const removContacts = data.filter((contact) => contact.id != id);
+    await fs.writeFile(contactsPath, JSON.stringify(removContacts));
+    
+    return removContacts;
+     
   } catch (error) {
     console.error(error.message);
   }
@@ -59,16 +57,15 @@ const removeContact = async (contactId) => {
 
 
 
-const updateContact = async (contactId, body) => {
-  const newContact = {...body};
+const updateContact = async (id, body) => {
   const data = await listContacts();
-  data.forEach((element) => {
-    if (element.id === contactId) {
-      element = newContact;
-    }
-  });
+  const idx = data.findIndex(item => item.id === id);
+  if (idx === -1) {
+    return null;
+  }
+  data[idx] = { ...body, id };
   await fs.writeFile(contactsPath, JSON.stringify(data));
-  return newContact;
+  return  data[idx];
 }
 
 module.exports = {
