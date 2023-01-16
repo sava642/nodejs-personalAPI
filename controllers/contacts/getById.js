@@ -6,7 +6,6 @@ const getById = async (req, res, next) => {
   try {
 
     const { id }  = req.params;
-    // const result = await db.getContactById(id);
     const result = await Contacts.findById(id);
 
     if (!result) {
