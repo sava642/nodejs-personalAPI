@@ -1,8 +1,11 @@
-const db = require("../../models/contacts");
+// const db = require("../../models/contacts");
+const { Contacts } = require("../../models/contacts");
 
 const getAll = async (req, res, next) => {
   try {
-    const contact = await db.listContacts();
+    
+    const { limit } = req.query;
+    const contact = await Contacts.find({}).limit(limit);
     res.json({
       status: "succes",  
       code: 200,
