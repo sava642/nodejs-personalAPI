@@ -1,19 +1,28 @@
-// const fs = require('fs/promises')
+const mongoose = require('mongoose');
+mongoose.set('strictQuery', false);
 
-const listContacts = async () => {}
+const contactsSchema = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Set name for contact'],
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
 
-const getContactById = async (contactId) => {}
-
-const removeContact = async (contactId) => {}
-
-const addContact = async (body) => {}
-
-const updateContact = async (contactId, body) => {}
+  },
+  { versionKey: false, timestamps: true }
+)
+const Contacts = mongoose.model("contacts", contactsSchema);
 
 module.exports = {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
+  Contacts,
 }
