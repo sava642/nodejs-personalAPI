@@ -1,8 +1,8 @@
 
-const mongoose = require('mongoose');
-mongoose.set('strictQuery', false);
+const { Schema, model } = require('mongoose');
+// mongoose.set('strictQuery', false);
 
-const contactsSchema = mongoose.Schema(
+const contactsSchema = Schema(
    {
     name: {
       type: String,
@@ -18,11 +18,15 @@ const contactsSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    }
      
   },
       { versionKey: false,  timestamps: true}
    )
-    const Contacts = mongoose.model("contacts", contactsSchema);
+    const Contacts = model("contacts", contactsSchema);
 
 module.exports = {
     Contacts,
