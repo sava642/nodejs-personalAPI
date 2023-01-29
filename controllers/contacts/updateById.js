@@ -3,6 +3,7 @@ const { Contacts } = require("../../models/contacts");
 
 const updateById = async (req, res, next) => {
 	try {
+
 		const { id } = req.params;
 		const updatedContact = await Contacts.findByIdAndUpdate(id, req.body, {
 			new: true,
@@ -19,7 +20,9 @@ const updateById = async (req, res, next) => {
 		})
 	} catch (error) {
 		next(error)
+
 	}
+
 }
 
 module.exports = updateById;
