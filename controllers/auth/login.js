@@ -1,4 +1,3 @@
-// const { required } = require("joi");
 const { User } = require("../../models/user");
 const { Unauthorized } = require("http-errors");
 const bcrypt = require('bcrypt');
